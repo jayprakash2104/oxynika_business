@@ -1,0 +1,123 @@
+<app-page-breadcrumb pageTitle="Packages" />
+<div class="space-y-6">
+    <div>
+        <app-basic-table-one 
+            addButtonText="Add Package" 
+            addButtonIcon="box-fill" 
+            [isLoading]="isLoading()"
+            [columns]="columns" 
+            [tableData]="dataArr()" 
+            [showSearch]="true" 
+            [showAddButton]="permissionService.has('packages.create')"
+            [showActions]="actions().length > 0"
+            [actions]="actions()"
+            (addClick)="onAddBtnClick()" 
+            />
+    </div>
+</div>
+
+<app-modal [isOpen]="isModalOpen()" (close)="closeModal()" className="max-w-[700px] m-4">
+    <div
+        class="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
+        <div class="px-2 pe-14">
+            <h4 class="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
+                {{ isEditMode() ? 'Update Package' : 'Add Package' }}
+            </h4>
+            <p class="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
+                {{ isEditMode() ? 'Update' : 'Add' }} - <strong class="text-primary"><i>#{{ form.get('name')?.value }}</i></strong>
+            </p>
+        </div>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col">
+
+            <div class="custom-scrollbar h-[450px] overflow-y-auto px-2">
+
+                <div class="mb-6">
+                    <h5 class="mb-5 text-lg font-medium text-gray-800 dark:text-white/90">
+                        Package Information
+                    </h5>
+
+                    <div class="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-1">
+
+                        <div class="col-span-1 lg:col-span-1">
+                            <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                                Package Name
+                            </label>
+                            <app-input-field type="text" formControlName="name" placeholder="Enter package name" />
+
+                            @if (
+                            form.get('name')?.touched &&
+                            form.get('name')?.invalid
+                            ) {
+                            <p class="mt-1 text-sm text-error-500">
+                                Package Name is required.
+                            </p>
+                            }
+                        </div>
+
+                        <div class="col-span-1 lg:col-span-1">
+                            <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                                Package Price
+                            </label>
+                            <app-input-field type="number" formControlName="price" placeholder="Enter package price" />
+                            @if (
+                            form.get('price')?.touched &&
+                            form.get('price')?.invalid
+                            ) {
+                            <p class="mt-1 text-sm text-error-500">
+                                Package Price is required.
+                            </p>
+                            }
+                        </div>
+
+                        @if (isEditMode()) {
+                        <div class="col-span-1">
+
+                            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                                Package Status
+                            </label>
+
+                            <label class="inline-flex cursor-pointer items-center">
+
+                                <input type="checkbox" formControlName="status" class="peer sr-only" />
+
+                                <div class="relative h-6 w-11 rounded-full bg-gray-200
+                                        after:absolute after:start-[2px] after:top-[2px]
+                                        after:h-5 after:w-5 after:rounded-full
+                                        after:border after:border-gray-300
+                                        after:bg-white after:transition-all
+                                        peer-checked:bg-brand-500
+                                        peer-checked:after:translate-x-full
+                                        peer-checked:after:border-white
+                                        dark:border-gray-600 dark:bg-gray-700"
+                                >
+                                </div>
+
+                                <span class="ms-3 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    {{ form.get('status')?.value ? 'Active' : 'Inactive' }}
+                                </span>
+
+                            </label>
+
+                        </div>
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-6 flex items-center gap-3 px-2 lg:justify-end">
+
+                <app-button size="sm" variant="outline" type="button" (btnClick)="closeModal()">
+                    Close
+                </app-button>
+
+                <app-button size="sm" type="submit">
+                    {{ isEditMode() ? 'Update Package' : 'Save Package' }}
+                </app-button>
+
+            </div>
+
+        </form>
+    </div>
+</app-modal>

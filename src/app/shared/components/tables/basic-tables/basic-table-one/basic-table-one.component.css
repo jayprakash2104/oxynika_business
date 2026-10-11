@@ -1,0 +1,3 @@
+:host ::ng-deep .ag-column-last{
+    display: flex!important;
+}

@@ -1,0 +1,186 @@
+<app-page-breadcrumb pageTitle="Sub Admin List" />
+<div class="space-y-6">
+  <div>
+      <app-basic-table-one 
+        addButtonText="Add Sub Admin"
+        addButtonIcon="person-plus-fill"
+        [isLoading]="isLoading()" 
+        [columns]="columns"
+        [tableData]="subAdmins()"
+        [showSearch]="true"
+        [showAddButton]="true"
+        [showActions]="true"
+        [actions]="actions"
+        (rowClick)="onSubAdminRowClick($event)"
+        (addClick)="onAddSubAdmin()"
+        />
+  </div>
+</div>
+
+<app-modal [isOpen]="isModalOpen()" (close)="closeModal()" className="max-w-[700px] m-4">
+  <div
+    class="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
+    <div class="px-2 pe-14">
+      <h4 class="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
+        {{ isEditMode() ? 'Edit Sub Admin Information' : 'Add Sub Admin Information' }}
+      </h4>
+      <p class="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
+        {{ isEditMode() ? 'Edit' : 'Add' }} details and permissions for the sub-admin.
+      </p>
+    </div>
+    <form 
+      [formGroup]="subAdminForm" 
+      (ngSubmit)="onSubmit()" 
+      class="flex flex-col"
+    >
+
+      <div class="custom-scrollbar h-[450px] overflow-y-auto px-2">
+
+        <div class="mb-6">
+          <h5 class="mb-5 text-lg font-medium text-gray-800 dark:text-white/90">
+            Personal Information
+          </h5>
+
+          <div class="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
+
+            <div class="col-span-2 lg:col-span-1">
+              <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                Name
+              </label>
+              <app-input-field type="text" formControlName="name" />
+
+              @if (
+                subAdminForm.get('name')?.touched &&
+                subAdminForm.get('name')?.invalid
+              ) {
+                <p class="mt-1 text-sm text-error-500">
+                  Name is required.
+                </p>
+              }
+            </div>
+
+            <div class="col-span-2 lg:col-span-1">
+              <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                Email
+              </label>
+              <app-input-field type="email" formControlName="email" />
+              @if (
+                subAdminForm.get('email')?.touched &&
+                subAdminForm.get('email')?.invalid
+              ) {
+                <p class="mt-1 text-sm text-error-500">
+                  Enter a valid email address.
+                </p>
+              }
+            </div>
+
+            @if (!isEditMode()) {
+              <div class="col-span-2 lg:col-span-1">
+                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                  Password
+                </label>
+                <app-input-field type="password" formControlName="password" />
+                @if (
+                  subAdminForm.get('password')?.touched &&
+                  subAdminForm.get('password')?.invalid
+                ) {
+                  <p class="mt-1 text-sm text-error-500">
+                    Password must be at least 8 characters.
+                  </p>
+                }
+              </div>
+
+              <div class="col-span-2 lg:col-span-1">
+                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                  Confirm Password
+                </label>
+                <app-input-field type="password" formControlName="confirmPassword" />
+                @if (
+                  subAdminForm.get('confirmPassword')?.touched &&
+                  subAdminForm.get('confirmPassword')?.invalid
+                ) {
+                  <p class="mt-1 text-sm text-error-500">
+                    Confirm password is required.
+                  </p>
+                }
+                @if (
+                  subAdminForm.get('confirmPassword')?.touched &&
+                  subAdminForm.get('password')?.value !==
+                  subAdminForm.get('confirmPassword')?.value
+                ) {
+                  <p class="mt-1 text-sm text-error-500">
+                    Passwords do not match.
+                  </p>
+                }
+              </div>
+            }
+
+          </div>
+        </div>
+
+        <fieldset class="rounded-xl border border-gray-200 p-4 dark:border-gray-700" formArrayName="permissions">
+          <legend class="px-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+            Assign Permissions
+          </legend>
+
+          @for (
+            menu of permissionMenus();
+            track menu.key;
+            let menuIndex = $index
+          ) {
+
+          <div 
+            class="mb-4 rounded-xl border border-gray-200 p-4 last:mb-0 dark:border-gray-700" 
+            [formGroupName]="menuIndex"
+          >
+
+            <div class="mb-3 flex items-center border-b border-dashed border-gray-200 pb-3 dark:border-gray-700">
+              <span class="text-base font-semibold text-gray-800 dark:text-white"> {{ menu.name }} </span>
+            </div>
+
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4" formGroupName="permissions">
+              @for (
+                permission of menu.permissions;
+                track permission.key
+              ) {
+              <label class="flex cursor-pointer items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+
+                <input 
+                  type="checkbox" 
+                  [formControlName]="permission.key" 
+                  class="h-4 w-4 rounded border-gray-300 text-brand-500 focus:ring-brand-500" 
+                />
+
+                <span class="capitalize"> {{ getPermissionLabel(permission) }} </span>
+
+              </label>
+              }
+
+            </div>
+          </div>
+
+          } @empty {
+            <p class="py-4 text-center text-sm text-gray-500">
+              No permissions available.
+            </p>
+          }
+
+        </fieldset>
+
+      </div>
+
+      <div class="mt-6 flex items-center gap-3 px-2 lg:justify-end">
+
+        <app-button size="sm" variant="outline" type="button" (btnClick)="closeModal()">
+          Close
+        </app-button>
+
+        <app-button size="sm" type="submit">
+          {{ isEditMode() ? 'Update Sub Admin' : 'Save Sub Admin' }}
+        </app-button>
+
+      </div>
+
+    </form>
+  </div>
+</app-modal>

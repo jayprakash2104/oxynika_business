@@ -1,0 +1,137 @@
+<app-page-breadcrumb pageTitle="BDO List" />
+<div class="space-y-6">
+  <div>
+      <app-basic-table-one 
+        addButtonText="Add BDO"
+        addButtonIcon="person-plus-fill"
+        [isLoading]="isLoading()" 
+        [columns]="columns"
+        [tableData]="dataArr()"
+        [showSearch]="true"
+        [showAddButton]="permissionService.has('bdo.create')"
+        [showActions]="actions().length > 0"
+        [actions]="actions()"
+        (rowClick)="onRowClick($event)"
+        (addClick)="onAddBtnClick()"
+        />
+  </div>
+</div>
+
+<app-modal [isOpen]="isModalOpen()" (close)="closeModal()" className="max-w-[700px] m-4">
+  <div
+    class="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
+    <div class="px-2 pe-14">
+      <h4 class="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
+        {{ isEditMode() ? 'Edit BDO Information' : 'Add BDO Information' }}
+      </h4>
+      <p class="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
+        {{ isEditMode() ? 'Edit' : 'Add' }} details and permissions for the BDO.
+      </p>
+    </div>
+    <form 
+      [formGroup]="form" 
+      (ngSubmit)="onSubmit()" 
+      class="flex flex-col"
+    >
+
+      <div class="custom-scrollbar h-[450px] overflow-y-auto px-2">
+
+        <div class="mb-6">
+          <h5 class="mb-5 text-lg font-medium text-gray-800 dark:text-white/90">
+            BDO Information
+          </h5>
+
+          <div class="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
+
+            <div class="col-span-2 lg:col-span-1">
+              <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                Name
+              </label>
+              <app-input-field type="text" formControlName="name" />
+
+              @if (
+                form.get('name')?.touched &&
+                form.get('name')?.invalid
+              ) {
+                <p class="mt-1 text-sm text-error-500">
+                  Name is required.
+                </p>
+              }
+            </div>
+
+            <div class="col-span-2 lg:col-span-1">
+              <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                Email
+              </label>
+              <app-input-field type="email" formControlName="email" />
+              @if (
+                form.get('email')?.touched &&
+                form.get('email')?.invalid
+              ) {
+                <p class="mt-1 text-sm text-error-500">
+                  Enter a valid email address.
+                </p>
+              }
+            </div>
+
+            @if (!isEditMode()) {
+              <div class="col-span-2 lg:col-span-1">
+                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                  Password
+                </label>
+                <app-input-field type="password" formControlName="password" />
+                @if (
+                  form.get('password')?.touched &&
+                  form.get('password')?.invalid
+                ) {
+                  <p class="mt-1 text-sm text-error-500">
+                    Password must be at least 8 characters.
+                  </p>
+                }
+              </div>
+
+              <div class="col-span-2 lg:col-span-1">
+                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                  Confirm Password
+                </label>
+                <app-input-field type="password" formControlName="confirmPassword" />
+                @if (
+                  form.get('confirmPassword')?.touched &&
+                  form.get('confirmPassword')?.invalid
+                ) {
+                  <p class="mt-1 text-sm text-error-500">
+                    Confirm password is required.
+                  </p>
+                }
+                @if (
+                  form.get('confirmPassword')?.touched &&
+                  form.get('password')?.value !==
+                  form.get('confirmPassword')?.value
+                ) {
+                  <p class="mt-1 text-sm text-error-500">
+                    Passwords do not match.
+                  </p>
+                }
+              </div>
+            }
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mt-6 flex items-center gap-3 px-2 lg:justify-end">
+
+        <app-button size="sm" variant="outline" type="button" (btnClick)="closeModal()">
+          Close
+        </app-button>
+
+        <app-button size="sm" type="submit">
+          {{ isEditMode() ? 'Update BDO' : 'Save BDO' }}
+        </app-button>
+
+      </div>
+
+    </form>
+  </div>
+</app-modal>

@@ -1,0 +1,16 @@
+@if (alertService.alert(); as alert) {
+<div 
+    class="absolute top-5 z-999999 w-full max-w-md"
+    [ngClass]="{
+      'left-5': alertService.alert()?.placement === 'left',
+      'right-5': alertService.alert()?.placement === 'right'
+    }"
+>
+  <app-alert
+    [variant]="alertService.alert()?.variant ?? 'info'"
+    [title]="alertService.alert()?.title ?? ''"
+    [message]="alertService.alert()?.message ?? ''"
+  />
+</div>
+}
+<router-outlet></router-outlet>

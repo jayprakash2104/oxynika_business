@@ -1,0 +1,26 @@
+<button
+  [type]="type"
+  [ngClass]="
+    'inline-flex items-center justify-center gap-2 rounded-lg transition ' +
+    className + ' ' +
+    sizeClasses + ' ' +
+    variantClasses + ' ' +
+    disabledClasses
+  "
+  [disabled]="disabled || loading"
+  (click)="onClick($event)"
+>
+
+  @if (loading) {
+      <span class="loader"></span>
+    } @else {
+    @if (startIcon) {
+      <span class="flex items-center" [innerHTML]="startIcon | safeHtml"></span>
+    }
+    <ng-content></ng-content>
+    @if (endIcon) {
+      <!-- <span class="flex items-center" [innerHTML]="endIcon | safeHtml"></span> -->
+      <i class="bi bi-{{endIcon}}"></i>
+    }
+  }
+</button>
