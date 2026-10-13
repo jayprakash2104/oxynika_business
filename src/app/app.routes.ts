@@ -1,23 +1,13 @@
 import { Routes } from '@angular/router';
 import { EcommerceComponent } from './pages/dashboard/ecommerce/ecommerce.component';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { FormElementsComponent } from './pages/forms/form-elements/form-elements.component';
-import { BasicTablesComponent } from './pages/tables/basic-tables/basic-tables.component';
 import { BlankComponent } from './pages/blank/blank.component';
 import { NotFoundComponent } from './pages/other-page/not-found/not-found.component';
 import { AppLayoutComponent } from './shared/layout/app-layout/app-layout.component';
-import { InvoicesComponent } from './pages/invoices/invoices.component';
 import { LineChartComponent } from './pages/charts/line-chart/line-chart.component';
 import { BarChartComponent } from './pages/charts/bar-chart/bar-chart.component';
-import { AlertsComponent } from './pages/ui-elements/alerts/alerts.component';
-import { AvatarElementComponent } from './pages/ui-elements/avatar-element/avatar-element.component';
-import { BadgesComponent } from './pages/ui-elements/badges/badges.component';
-import { ButtonsComponent } from './pages/ui-elements/buttons/buttons.component';
-import { ImagesComponent } from './pages/ui-elements/images/images.component';
-import { VideosComponent } from './pages/ui-elements/videos/videos.component';
 import { SignInComponent } from './pages/auth-pages/sign-in/sign-in.component';
 import { SignUpComponent } from './pages/auth-pages/sign-up/sign-up.component';
-import { CalenderComponent } from './pages/calender/calender.component';
 import { SubAdminListComponent } from './pages/sub-admin/sub-admin-list/sub-admin-list.component';
 import { SubAdminDetailsComponent } from './pages/sub-admin/sub-admin-details/sub-admin-details.component';
 import { authGuard } from './core/guards/auth.guard';
@@ -27,6 +17,7 @@ import { PackagesComponent } from './pages/packages/packages.component';
 import { EncryptionComponent } from './pages/encryption/encryption.component';
 import { ActivationRequestsComponent } from './pages/activation-requests/activation-requests.component';
 import { PublicReferralFormComponent } from './pages/public-referral-form/public-referral-form.component';
+import { ReferalNetworkComponent } from './pages/referal-network/referal-network.component';
 
 export const routes: Routes = [
    {
@@ -40,6 +31,11 @@ export const routes: Routes = [
     title: 'Join Oxynika | Registration',
   },
   {
+    path:'encryption',
+    component:EncryptionComponent,
+    title:'Encryption | Oxynika'
+  },
+  {
     path:'',
     component:AppLayoutComponent,
     canActivate: [authGuard],
@@ -50,11 +46,6 @@ export const routes: Routes = [
         pathMatch: 'full',
         title:
           'Ecommerce Dashboard | Oxynika',
-      },
-      {
-        path:'calendar',
-        component:CalenderComponent,
-        title:'Calender | Oxynika'
       },
       {
         path:'sub-admins',
@@ -87,9 +78,9 @@ export const routes: Routes = [
         title:'Package Activation | Oxynika'
       },
       {
-        path:'encryption',
-        component:EncryptionComponent,
-        title:'Encryption | Oxynika'
+        path:'referal-network',
+        component: ReferalNetworkComponent,
+        title:'Referal Network | Oxynika'
       },
       {
         path:'profile',
@@ -102,25 +93,9 @@ export const routes: Routes = [
         title: 'Sub Admin Details'
       },
       {
-        path:'form-elements',
-        component:FormElementsComponent,
-        title:'Form Elements Dashboard | Oxynika'
-      },
-      {
-        path:'basic-tables',
-        component:BasicTablesComponent,
-        title:'Basic Tables Dashboard | Oxynika'
-      },
-      {
         path:'blank',
         component:BlankComponent,
         title:'Blank Dashboard | Oxynika'
-      },
-      // support tickets
-      {
-        path:'invoice',
-        component:InvoicesComponent,
-        title:'Invoice Details Dashboard | Oxynika'
       },
       {
         path:'line-chart',
@@ -131,36 +106,6 @@ export const routes: Routes = [
         path:'bar-chart',
         component:BarChartComponent,
         title:'Bar Chart Dashboard | Oxynika'
-      },
-      {
-        path:'alerts',
-        component:AlertsComponent,
-        title:'Alerts Dashboard | Oxynika'
-      },
-      {
-        path:'avatars',
-        component:AvatarElementComponent,
-        title:'Avatars Dashboard | Oxynika'
-      },
-      {
-        path:'badge',
-        component:BadgesComponent,
-        title:'Badges Dashboard | Oxynika'
-      },
-      {
-        path:'buttons',
-        component:ButtonsComponent,
-        title:'Buttons Dashboard | Oxynika'
-      },
-      {
-        path:'images',
-        component:ImagesComponent,
-        title:'Images Dashboard | Oxynika'
-      },
-      {
-        path:'videos',
-        component:VideosComponent,
-        title:'Videos Dashboard | Oxynika'
       },
     ]
   },

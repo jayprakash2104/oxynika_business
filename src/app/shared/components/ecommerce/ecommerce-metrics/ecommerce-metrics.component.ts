@@ -5,7 +5,8 @@ import { SafeHtmlPipe } from '../../../pipe/safe-html.pipe';
 @Component({
   selector: 'app-ecommerce-metrics',
   imports: [BadgeComponent,SafeHtmlPipe],
-  templateUrl: './ecommerce-metrics.component.html'
+  templateUrl: './ecommerce-metrics.component.html',
+  styleUrl: './ecommerce-metrics.component.css'
 })
 export class EcommerceMetricsComponent {
 

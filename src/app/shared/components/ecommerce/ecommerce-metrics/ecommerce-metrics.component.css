@@ -1,0 +1,72 @@
+.metric-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* Soft ambient background glow */
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: -70px;
+  right: -60px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(16, 185, 129, 0.12) 0%,
+    rgba(16, 185, 129, 0.05) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -1;
+  transition:
+    transform 0.4s ease,
+    opacity 0.3s ease;
+}
+
+/* Hover effect */
+.metric-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(16, 185, 129, 0.3);
+  box-shadow:
+    0 8px 24px rgba(16, 185, 129, 0.08),
+    0 0 18px rgba(16, 185, 129, 0.04);
+}
+
+.metric-card:hover::before {
+  transform: scale(1.35);
+}
+
+/* Dark mode glow */
+.dark .metric-card::before {
+  background: radial-gradient(
+    circle,
+    rgba(16, 185, 129, 0.14) 0%,
+    rgba(16, 185, 129, 0.05) 45%,
+    transparent 70%
+  );
+}
+
+.dark .metric-card:hover {
+  border-color: rgba(16, 185, 129, 0.25);
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.18),
+    0 0 20px rgba(16, 185, 129, 0.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .metric-card,
+  .metric-card::before {
+    transition: none;
+  }
+
+  .metric-card:hover {
+    transform: none;
+  }
+}

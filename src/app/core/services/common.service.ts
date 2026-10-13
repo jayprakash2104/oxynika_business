@@ -146,10 +146,16 @@ export class CommonService {
     );
   }
 
-userRegistration( payload: any, referralCode: string ): Observable<any> {
-  return this.http.post<any>(
-    `${environment.baseUrl}${API_ENDPOINTS.USER.BDO.USER_REGISTRATION}?ref=${encodeURIComponent(referralCode)}`,
-    payload
-  );
-}
+  userRegistration( payload: any, referralCode: string ): Observable<any> {
+    return this.http.post<any>(
+      `${environment.baseUrl}${API_ENDPOINTS.USER.BDO.USER_REGISTRATION}?ref=${encodeURIComponent(referralCode)}`,
+      payload
+    );
+  }
+
+  fetchBdoNetwork(): Observable<any> {
+    return this.http.get<any>(
+      `${environment.baseUrl}${API_ENDPOINTS.USER.BDO.NETWORK}`
+    );
+  }
 }

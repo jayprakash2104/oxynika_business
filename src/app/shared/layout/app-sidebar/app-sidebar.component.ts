@@ -16,6 +16,7 @@ import { EncryptionService } from '../../../core/services/encryption.service';
     SafeHtmlPipe,
   ],
   templateUrl: './app-sidebar.component.html',
+  styleUrl: './app-sidebar.component.css'
 })
 export class AppSidebarComponent {
 
@@ -34,6 +35,7 @@ export class AppSidebarComponent {
     permissions: `<i class="bi bi-shield-plus"></i>`,
     'activation-requests': `<i class="bi bi-box-fill"></i>`,
     'packages': `<i class="bi bi-box-fill"></i>`,
+    ref_network : `<i class="bi bi-diagram-3-fill"></i>`
 
   };
 
@@ -128,13 +130,13 @@ export class AppSidebarComponent {
         );
 
         // Show Requested Packages only for BDO
-        // if (user?.role === 'BDO') {
-        //   items.push({
-        //     name: 'Requested Packages',
-        //     icon: this.iconMap['packages'],
-        //     path: '/requested-packages'
-        //   });
-        // }
+        if (user?.role === 'BDO') {
+          items.push({
+            name: 'Referral Network',
+            icon: this.iconMap['ref_network'],
+            path: '/referal-network'
+          });
+        }
       }
 
 
