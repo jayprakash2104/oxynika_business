@@ -1,0 +1,938 @@
+
+/* ==========================================
+   REFERRAL BANNER — OXYNIKA
+   Aurora animation + floating shapes + parallax
+========================================== */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* ==========================================
+   MAIN BANNER
+========================================== */
+
+.referral-banner {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 38px 44px;
+
+  border: 1px solid #dfe5ff;
+  border-radius: 22px;
+
+  background: linear-gradient(
+    115deg,
+    #f1efff 0%,
+    #f6f6ff 35%,
+    #eff7ff 70%,
+    #e4f3ff 100%
+  );
+
+  --parallax-x: 0px;
+  --parallax-y: 0px;
+}
+
+/* ==========================================
+   ANIMATED AURORA BACKGROUND
+========================================== */
+
+.referral-aurora {
+  position: absolute;
+  inset: -30%;
+  z-index: 0;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at 18% 24%,
+      rgba(151, 125, 255, 0.36) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      ellipse at 84% 22%,
+      rgba(91, 177, 255, 0.34) 0%,
+      transparent 38%
+    ),
+    radial-gradient(
+      ellipse at 72% 84%,
+      rgba(177, 157, 255, 0.30) 0%,
+      transparent 38%
+    ),
+    radial-gradient(
+      ellipse at 24% 78%,
+      rgba(151, 205, 255, 0.27) 0%,
+      transparent 40%
+    );
+
+  filter: blur(26px);
+  opacity: 0.95;
+
+  /* Mouse movement and animation use separate properties */
+  translate: var(--parallax-x) var(--parallax-y);
+  will-change: transform, translate;
+
+  animation: aurora-drift 11s ease-in-out infinite alternate;
+}
+
+/* ==========================================
+   FLOATING AMBIENT GLOWS
+========================================== */
+
+.referral-glow {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.referral-glow-one {
+  width: 230px;
+  height: 230px;
+  top: -140px;
+  left: 23%;
+
+  background: radial-gradient(
+    circle,
+    rgba(153, 130, 255, 0.28) 0%,
+    rgba(169, 151, 255, 0.12) 42%,
+    transparent 72%
+  );
+
+  animation: glow-drift-one 8s ease-in-out infinite alternate;
+}
+
+.referral-glow-two {
+  width: 270px;
+  height: 270px;
+  right: 12%;
+  bottom: -180px;
+
+  background: radial-gradient(
+    circle,
+    rgba(86, 174, 255, 0.28) 0%,
+    rgba(112, 181, 255, 0.12) 42%,
+    transparent 72%
+  );
+
+  animation: glow-drift-two 10s ease-in-out infinite alternate;
+}
+
+/* ==========================================
+   DECORATIVE ARTWORK LAYER
+========================================== */
+
+.referral-artwork {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.art-shape {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+/* Upper-left shapes */
+
+.shape-left-large {
+  width: 180px;
+  height: 245px;
+  top: -145px;
+  left: -112px;
+
+  background: rgba(151, 140, 255, 0.18);
+  transform: rotate(-24deg);
+
+  animation: circle-float-a 8s ease-in-out infinite alternate;
+}
+
+.shape-left-small {
+  width: 150px;
+  height: 190px;
+  top: -106px;
+  left: 8px;
+
+  background: rgba(190, 182, 255, 0.15);
+  transform: rotate(-32deg);
+
+  animation: circle-float-b 10s ease-in-out infinite alternate;
+}
+
+/* Upper-right shapes */
+
+.shape-right-large {
+  width: 260px;
+  height: 260px;
+  top: -190px;
+  right: -100px;
+
+  background: rgba(104, 184, 255, 0.22);
+
+  animation: circle-float-d 10s ease-in-out infinite alternate;
+}
+
+.shape-right-small {
+  width: 165px;
+  height: 165px;
+  top: -128px;
+  right: 45px;
+
+  background: rgba(167, 205, 255, 0.16);
+
+  animation: circle-float-e 12s ease-in-out infinite alternate;
+}
+
+/* Lower-left shapes */
+
+.shape-bottom-left {
+  width: 230px;
+  height: 165px;
+  bottom: -124px;
+  left: -72px;
+
+  background: rgba(147, 143, 255, 0.17);
+  transform: rotate(26deg);
+
+  animation: circle-float-b 11s ease-in-out infinite alternate;
+}
+
+.shape-bottom-left-small {
+  width: 145px;
+  height: 145px;
+  bottom: -115px;
+  left: 112px;
+
+  background: rgba(185, 193, 255, 0.16);
+
+  animation: circle-float-c 9s ease-in-out infinite alternate;
+}
+
+/* Lower-right shapes */
+
+.shape-bottom-right {
+  width: 290px;
+  height: 200px;
+  bottom: -165px;
+  right: -75px;
+
+  background: rgba(105, 159, 255, 0.19);
+  transform: rotate(-18deg);
+
+  animation: circle-float-e 10s ease-in-out infinite alternate;
+}
+
+.shape-bottom-right-small {
+  width: 205px;
+  height: 175px;
+  bottom: -145px;
+  right: 70px;
+
+  background: rgba(177, 185, 255, 0.17);
+  transform: rotate(22deg);
+
+  animation: circle-float-a 12s ease-in-out infinite alternate;
+}
+
+/* Decorative dots */
+
+.art-dot {
+  position: absolute;
+  display: block;
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+  background: rgba(107, 133, 255, 0.48);
+
+  animation: dot-pulse 3s ease-in-out infinite alternate;
+}
+
+.art-dot-left {
+  left: 10.5%;
+  bottom: 13%;
+}
+
+.art-dot-right {
+  right: 12%;
+  top: 19%;
+  width: 7px;
+  height: 7px;
+  animation-delay: 1.2s;
+}
+
+/* ==========================================
+   CONTENT LAYER
+========================================== */
+
+.referral-banner-content {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  align-items: center;
+  gap: 44px;
+}
+
+.welcome-section {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-width: 0;
+}
+
+.welcome-copy {
+  min-width: 0;
+}
+
+/* ==========================================
+   DASHBOARD BADGE
+========================================== */
+
+.dashboard-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 17px;
+  padding: 7px 14px;
+
+  border: 1px solid rgba(216, 219, 255, 0.9);
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.75);
+  color: #4338ca;
+
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+
+  box-shadow: 0 2px 5px rgba(79, 70, 229, 0.04);
+}
+
+.dashboard-badge svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+/* ==========================================
+   WELCOME HEADING
+========================================== */
+
+.welcome-copy h2 {
+  margin: 0;
+
+  color: #17213d;
+  font-family: 'Outfit', sans-serif;
+
+  font-size: clamp(27px, 2.2vw, 35px);
+  font-weight: 500;
+  letter-spacing: -1.2px;
+  line-height: 1.2;
+}
+
+.welcome-copy h2 span {
+  background: linear-gradient(
+    100deg,
+    #5b3df5 0%,
+    #7645f6 55%,
+    #3867ed 100%
+  );
+    font-weight: 800;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.welcome-copy p {
+  max-width: 500px;
+  margin: 14px 0 0;
+
+  color: #52617c;
+  font-family: 'Manrope', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.75;
+}
+
+/* ==========================================
+   REFERRAL ACTIONS
+========================================== */
+
+.referral-actions {
+  min-width: 0;
+}
+
+.referral-actions > label {
+  display: block;
+  margin-bottom: 12px;
+
+  color: #293b59;
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.referral-control-row {
+  display: flex;
+  align-items: stretch;
+  gap: 14px;
+  min-width: 0;
+}
+
+/* Referral URL field */
+
+.referral-input {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 13px;
+
+  min-width: 0;
+  height: 60px;
+  padding: 0 19px;
+
+  border: 1px solid #e0e5f5;
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 2px 4px rgba(30, 55, 100, 0.10);
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.referral-input:focus-within {
+  border-color: #a5b4fc;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.10);
+}
+
+.referral-input > svg {
+  flex: 0 0 23px;
+  width: 23px;
+  height: 23px;
+
+  stroke: #6255ff;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.referral-input input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+
+  border: 0;
+  outline: 0;
+  background: transparent;
+
+  color: #1c2b47;
+  font-family: 'Manrope', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+
+  text-overflow: ellipsis;
+}
+
+.referral-input input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* ==========================================
+   COPY BUTTON
+========================================== */
+
+.copy-button {
+  display: inline-flex;
+  flex: 0 0 145px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  min-height: 60px;
+  padding: 0 23px;
+
+  border: 0;
+  border-radius: 16px;
+
+  background: linear-gradient(110deg, #5035fa, #5a35f5);
+  box-shadow: 0 5px 12px rgba(79, 55, 245, 0.18);
+
+  color: #fff;
+  cursor: pointer;
+
+  font-family: 'Manrope', sans-serif;
+  font-size: 15px;
+  font-weight: 650;
+
+  transition:
+    background 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.copy-button svg {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.copy-button:hover {
+  background: linear-gradient(110deg, #4430e8, #4e2ce5);
+  box-shadow: 0 7px 17px rgba(79, 55, 245, 0.24);
+  transform: translateY(-1px);
+}
+
+.copy-button:active {
+  transform: scale(0.98);
+}
+
+/* ==========================================
+   EMAIL SHARE LINK
+========================================== */
+
+.email-share {
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+
+  min-height: 50px;
+  margin-top: 13px;
+
+  color: #315ce0;
+  font-family: 'Manrope', sans-serif;
+  font-size: 15px;
+  font-weight: 550;
+  text-decoration: none;
+
+  transition: color 180ms ease;
+}
+
+.email-share:hover {
+  color: #4338ca;
+}
+
+.email-icon {
+  display: inline-flex;
+  flex: 0 0 46px;
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+
+  border: 1px solid rgba(218, 221, 255, 0.8);
+  border-radius: 50%;
+
+  background: rgba(225, 225, 255, 0.8);
+  color: #5145f5;
+}
+
+.email-icon svg {
+  width: 22px;
+  height: 22px;
+
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.email-arrow {
+  width: 16px;
+  height: 16px;
+  margin-left: 2px;
+}
+
+/* ==========================================
+   ANIMATION KEYFRAMES
+========================================== */
+
+@keyframes aurora-drift {
+  0% {
+    transform: translate3d(-3%, -2%, 0) rotate(0deg) scale(1);
+  }
+
+  50% {
+    transform: translate3d(3%, 2%, 0) rotate(5deg) scale(1.08);
+  }
+
+  100% {
+    transform: translate3d(-2%, 4%, 0) rotate(-4deg) scale(1.04);
+  }
+}
+
+@keyframes glow-drift-one {
+  from {
+    transform: translate3d(-10px, 0, 0) scale(0.9);
+  }
+
+  to {
+    transform: translate3d(45px, 25px, 0) scale(1.15);
+  }
+}
+
+@keyframes glow-drift-two {
+  from {
+    transform: translate3d(10px, 0, 0) scale(0.9);
+  }
+
+  to {
+    transform: translate3d(-40px, -25px, 0) scale(1.15);
+  }
+}
+
+@keyframes circle-float-a {
+  from {
+    transform: translate3d(0, 0, 0) rotate(-24deg);
+  }
+
+  to {
+    transform: translate3d(12px, 8px, 0) rotate(-18deg);
+  }
+}
+
+@keyframes circle-float-b {
+  from {
+    transform: translate3d(0, 0, 0) rotate(-32deg);
+  }
+
+  to {
+    transform: translate3d(-10px, 8px, 0) rotate(-26deg);
+  }
+}
+
+@keyframes circle-float-c {
+  from {
+    transform: translate3d(0, 0, 0) rotate(-24deg);
+  }
+
+  to {
+    transform: translate3d(8px, -9px, 0) rotate(-19deg);
+  }
+}
+
+@keyframes circle-float-d {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  to {
+    transform: translate3d(-12px, 9px, 0) rotate(5deg);
+  }
+}
+
+@keyframes circle-float-e {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  to {
+    transform: translate3d(10px, -8px, 0) rotate(-5deg);
+  }
+}
+
+@keyframes dot-pulse {
+  from {
+    opacity: 0.35;
+    scale: 0.85;
+  }
+
+  to {
+    opacity: 0.9;
+    scale: 1.2;
+  }
+}
+
+/* ==========================================
+   TABLET RESPONSIVENESS
+========================================== */
+
+@media (max-width: 1100px) {
+  .referral-banner {
+    padding: 30px;
+  }
+
+  .referral-banner-content {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  .welcome-copy h2 {
+    font-size: 30px;
+  }
+
+  .welcome-copy p {
+    max-width: 650px;
+  }
+}
+
+/* ==========================================
+   MOBILE RESPONSIVENESS
+========================================== */
+
+@media (max-width: 600px) {
+  .referral-banner {
+    padding: 23px 18px;
+    border-radius: 18px;
+  }
+
+  .referral-banner-content {
+    gap: 25px;
+  }
+
+  .dashboard-badge {
+    margin-bottom: 13px;
+    padding: 7px 11px;
+    font-size: 12px;
+  }
+
+  .welcome-copy h2 {
+    font-size: 26px;
+    letter-spacing: -0.7px;
+  }
+
+  .welcome-copy p {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .referral-actions > label {
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+
+  .referral-control-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .referral-input {
+    height: 52px;
+    gap: 10px;
+    padding: 0 13px;
+    border-radius: 13px;
+  }
+
+  .referral-input input {
+    font-size: 13px;
+  }
+
+  .referral-input > svg {
+    flex-basis: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .copy-button {
+    flex: auto;
+    width: 100%;
+    min-height: 50px;
+    border-radius: 13px;
+  }
+
+  .email-share {
+    min-height: 44px;
+    margin-top: 12px;
+    font-size: 14px;
+  }
+
+  .email-icon {
+    flex-basis: 40px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .referral-aurora {
+    inset: -25%;
+    filter: blur(20px);
+    animation-duration: 13s;
+  }
+
+  .referral-glow-one {
+    width: 140px;
+    height: 140px;
+    top: -95px;
+    left: 18%;
+  }
+
+  .referral-glow-two {
+    width: 170px;
+    height: 170px;
+    right: 10%;
+    bottom: -125px;
+  }
+
+  .shape-left-large {
+    width: 120px;
+    height: 165px;
+    top: -100px;
+    left: -80px;
+  }
+
+  .shape-left-small {
+    width: 100px;
+    height: 125px;
+    top: -75px;
+    left: 10px;
+  }
+
+  .shape-left-pale {
+    width: 90px;
+    height: 130px;
+    left: 45px;
+    top: -20px;
+  }
+
+  .shape-right-large {
+    width: 155px;
+    height: 155px;
+    top: -118px;
+    right: -68px;
+  }
+
+  .shape-right-small {
+    width: 100px;
+    height: 100px;
+    top: -78px;
+    right: 24px;
+  }
+
+  .shape-bottom-left {
+    width: 145px;
+    height: 105px;
+    bottom: -80px;
+    left: -50px;
+  }
+
+  .shape-bottom-left-small {
+    width: 90px;
+    height: 90px;
+    bottom: -70px;
+    left: 65px;
+  }
+
+  .shape-bottom-right {
+    width: 175px;
+    height: 125px;
+    bottom: -100px;
+    right: -55px;
+  }
+
+  .shape-bottom-right-small {
+    width: 130px;
+    height: 110px;
+    bottom: -90px;
+    right: 30px;
+  }
+}
+
+/* ==========================================
+   ACCESSIBILITY
+========================================== */
+
+.copy-button:focus-visible,
+.email-share:focus-visible {
+  outline: 3px solid rgba(99, 102, 241, 0.4);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .referral-aurora,
+  .referral-glow,
+  .art-shape,
+  .art-dot {
+    animation: none !important;
+    transition: none !important;
+    will-change: auto;
+  }
+}
+
+
+/* Custom tooltip */
+.tooltip-trigger {
+  position: relative;
+}
+
+.tooltip-trigger::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  z-index: 100;
+  padding: 7px 10px;
+  border-radius: 6px;
+  background: #172a24;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -4px);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease,
+    visibility 0.18s ease;
+}
+
+/* Tooltip arrow */
+.tooltip-trigger::before {
+  content: '';
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  z-index: 101;
+  width: 8px;
+  height: 8px;
+  background: #172a24;
+  transform: translateX(-50%) rotate(45deg);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.18s ease;
+}
+
+/* Show on hover and keyboard focus */
+.tooltip-trigger:hover::after,
+.tooltip-trigger:hover::before,
+.tooltip-trigger:focus-visible::after,
+.tooltip-trigger:focus-visible::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tooltip-trigger:hover::after,
+.tooltip-trigger:focus-visible::after {
+  transform: translate(-50%, 0);
+}
+
+/* Keyboard accessibility */
+.tooltip-trigger:focus-visible {
+  outline: 2px solid #4b9474;
+  outline-offset: 3px;
+}

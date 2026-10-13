@@ -18,6 +18,7 @@ export const API_ENDPOINTS = {
             BDO_DETAILS: '/api/bdo',
             WALLET_DETAILS: '/api/bdo/wallet',
             TRANSACTION_HISTORY: '/api/bdo/wallet/transactions',
+            USER_REGISTRATION: '/api/register'
         },
         SUB_ADMIN: {
             SUB_ADMIN_LIST: '/api/admin/sub-admins',

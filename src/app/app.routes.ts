@@ -26,12 +26,18 @@ import { BdoDetailsComponent } from './pages/bdo/bdo-details/bdo-details.compone
 import { PackagesComponent } from './pages/packages/packages.component';
 import { EncryptionComponent } from './pages/encryption/encryption.component';
 import { ActivationRequestsComponent } from './pages/activation-requests/activation-requests.component';
+import { PublicReferralFormComponent } from './pages/public-referral-form/public-referral-form.component';
 
 export const routes: Routes = [
    {
     path: '',
     redirectTo: 'signin',
     pathMatch: 'full',
+  },
+  {
+    path: 'join',
+    component: PublicReferralFormComponent,
+    title: 'Join Oxynika | Registration',
   },
   {
     path:'',

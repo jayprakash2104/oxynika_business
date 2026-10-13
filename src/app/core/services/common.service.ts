@@ -145,4 +145,11 @@ export class CommonService {
       `${environment.baseUrl}${API_ENDPOINTS.USER.BDO.TRANSACTION_HISTORY}`
     );
   }
+
+userRegistration( payload: any, referralCode: string ): Observable<any> {
+  return this.http.post<any>(
+    `${environment.baseUrl}${API_ENDPOINTS.USER.BDO.USER_REGISTRATION}?ref=${encodeURIComponent(referralCode)}`,
+    payload
+  );
+}
 }
