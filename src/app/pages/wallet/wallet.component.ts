@@ -1,11 +1,8 @@
 import { Component, inject, OnInit, signal, ElementRef, HostListener} from '@angular/core';
 import { CommonService } from '../../core/services/common.service';
-import { DecimalPipe } from '@angular/common';
-import { DropdownComponent } from '../../shared/components//ui/dropdown/dropdown.component';
-import { DropdownItemComponent } from '../../shared/components/ui/dropdown/dropdown-item/dropdown-item.component';
 
 @Component({
-  imports: [DecimalPipe, DropdownComponent, DropdownItemComponent],
+  imports: [],
   selector: 'app-wallet',
   styleUrl: './wallet.component.css',
   templateUrl: './wallet.component.html',

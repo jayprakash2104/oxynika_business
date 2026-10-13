@@ -1,4 +1,3 @@
-import { UpperCasePipe } from '@angular/common';
 import { Component, input, output, EventEmitter, computed, signal, effect } from '@angular/core';
 import { ButtonComponent } from '../../../ui/button/button.component';
 import { AgGridAngular } from 'ag-grid-angular';
@@ -9,7 +8,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 
 @Component({
   selector: 'app-basic-table-one',
-  imports: [UpperCasePipe, ButtonComponent, AgGridAngular],
+  imports: [ButtonComponent, AgGridAngular],
   templateUrl: './basic-table-one.component.html',
   styleUrls: ['./basic-table-one.component.css'],
 })
