@@ -113,6 +113,35 @@
                   </p>
                 }
               </div>
+            } @else if (isEditMode()){
+                <div class="col-span-1">
+
+                  <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                    BDO Status
+                  </label>
+
+                  <label class="inline-flex cursor-pointer items-center">
+
+                    <input type="checkbox" formControlName="status" class="peer sr-only" />
+
+                    <div class="relative h-6 w-11 rounded-full bg-gray-200
+                              after:absolute after:start-[2px] after:top-[2px]
+                              after:h-5 after:w-5 after:rounded-full
+                              after:border after:border-gray-300
+                              after:bg-white after:transition-all
+                              peer-checked:bg-brand-500
+                              peer-checked:after:translate-x-full
+                              peer-checked:after:border-white
+                              dark:border-gray-600 dark:bg-gray-700">
+                    </div>
+
+                    <span class="ms-3 text-sm font-medium text-gray-700 dark:text-gray-300">
+                      {{ form.get('status')?.value ? 'Active' : 'Inactive' }}
+                    </span>
+
+                  </label>
+
+                </div>
             }
 
           </div>

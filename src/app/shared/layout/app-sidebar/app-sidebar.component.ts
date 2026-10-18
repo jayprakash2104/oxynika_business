@@ -24,6 +24,7 @@ export class AppSidebarComponent {
   private encryptionService = inject(EncryptionService);
   // Main nav items
   navItems = signal<any[]>([]);
+  menuLoading = signal(true);
   // Others nav items
 
   private iconMap: Record<string, string> = {
@@ -94,9 +95,10 @@ export class AppSidebarComponent {
   }
 
   getMenuItems() {
+  this.menuLoading.set(true);
   this.commonService.getMenuItems().subscribe({
     next: async (response: { menu: any[]; permissions: string[] }) => {
-
+    try {
       const encryptedPermissions = sessionStorage.getItem('permissions');
       const permissions: string[] = encryptedPermissions
         ? (await this.encryptionService.decrypt<string[]>(encryptedPermissions)) ?? []
@@ -131,6 +133,11 @@ export class AppSidebarComponent {
 
         // Show Requested Packages only for BDO
         if (user?.role === 'BDO') {
+          items.unshift({
+            name: 'Dashboard',
+            icon: this.iconMap['dashboard'],
+            path: '/dashboard'
+          });
           items.push({
             name: 'Referral Network',
             icon: this.iconMap['ref_network'],
@@ -144,6 +151,12 @@ export class AppSidebarComponent {
 
       // Re-check active menu after menu is available
       this.setActiveMenuFromRoute(this.router.url);
+    } catch (error) {
+        console.error('Error processing sidebar menu:', error);
+        this.navItems.set([]);
+      } finally {
+        this.menuLoading.set(false);
+      }
     },
 
     error: (error) => {

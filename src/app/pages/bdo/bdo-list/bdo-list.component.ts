@@ -51,6 +51,7 @@ form = this.fb.group({
   email: ['', [Validators.required, Validators.email]],
   password: ['', [Validators.required, Validators.minLength(8)]],
   confirmPassword: ['', [Validators.required]],
+  status: [true],
 });
 
   columns: any[] = [
@@ -237,8 +238,8 @@ readonly actions = computed(() =>
       sections: {
         meta: true,
         address: false,
-        security: true,
-        dangerZone: true,
+        security: false,
+        dangerZone: false,
       },
     };
     const encryptedData = await this.encryptionService.encrypt(data);
@@ -291,6 +292,7 @@ readonly actions = computed(() =>
         email: row.email ?? '',
         password: '',
         confirmPassword: '',
+        status: row?.bdo_status
       });
     });
   }

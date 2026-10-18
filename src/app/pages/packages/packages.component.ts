@@ -43,7 +43,7 @@ export class PackagesComponent {
   isModalOpen = signal(false);
   isEditMode = signal(false);
   editingPackageId = signal<number | null>(null);
-userRole = signal<string>('');
+  userRole = signal<string>('');
 
   form = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(2)]],

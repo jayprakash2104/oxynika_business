@@ -14,7 +14,7 @@
           </div>
           <div class="text-start">
             <h4 class="mb-2 text-lg font-semibold text-gray-800 dark:text-white/90">
-              {{ user()?.name }}
+              {{ user()?.name | uppercase }}
             </h4>
             <div class="flex items-center gap-1 sm:gap-3">
               <p class="text-sm text-gray-500 dark:text-gray-400">
@@ -22,7 +22,7 @@
               </p>
               <div class="hidden h-3.5 w-px bg-gray-300 sm:block dark:bg-gray-700"></div>
               <p class="text-sm text-gray-500 dark:text-gray-400">
-                {{ user()?.roles?.join(', ') }}
+                {{ user()?.roles?.length ? user()?.roles?.join(', ') : user()?.role || 'No role assigned' }}
               </p>
             </div>
           </div>

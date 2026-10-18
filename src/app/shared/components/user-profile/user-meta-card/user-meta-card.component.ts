@@ -34,27 +34,37 @@ export class UserMetaCardComponent {
     this.isInfoModalOpen = true;
   }
 
-  groupedPermissions = computed(() => {
-    const permissions = this.user()?.permissions ?? [];
-  
-    const grouped: Record<string, string[]> = {};
-  
-    permissions.forEach((permission: string) => {
-      const [module, action] = permission.split('.');
-  
-      if (!module || !action) {
-        return;
-      }
-  
-      if (!grouped[module]) {
-        grouped[module] = [];
-      }
-  
-      grouped[module].push(action);
-    });
-  
-    return grouped;
+groupedPermissions = computed(() => {
+  const permissions = this.user()?.permissions ?? [];
+
+  const grouped: Record<string, string[]> = {};
+
+  permissions.forEach((permission: any) => {
+    // Support both string permissions and permission objects
+    const permissionName =
+      typeof permission === 'string'
+        ? permission
+        : permission?.name;
+
+    if (typeof permissionName !== 'string') {
+      return;
+    }
+
+    const [module, action] = permissionName.split('.');
+
+    if (!module || !action) {
+      return;
+    }
+
+    if (!grouped[module]) {
+      grouped[module] = [];
+    }
+
+    grouped[module].push(action);
   });
+
+  return grouped;
+});
 
   // Example user data (could be made dynamic)
   // user = {

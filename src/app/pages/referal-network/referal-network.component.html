@@ -1,1 +1,427 @@
-<app-page-breadcrumb pageTitle="BDO Network" />
+<app-page-breadcrumb pageTitle="My Referral Network" />
+
+<div class="min-h-screen bg-gray-50 dark:bg-gray-950 py-3 rounded-lg">
+  <div class="mx-auto max-w-6xl space-y-6">
+
+    <!-- Page heading -->
+    <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+      <div>
+        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 italic">
+          Explore your referral hierarchy and manage your network visibility.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        (click)="fetchBdoNetwork()"
+        [disabled]="isLoading()"
+        class="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-800"
+      >
+        <svg
+          class="h-4 w-4"
+          [class.animate-spin]="isLoading()"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M4 4v5h5M20 20v-5h-5M5.5 9A7 7 0 0118 6l2 3M18.5 15A7 7 0 016 18l-2-3" />
+        </svg>
+        Refresh network
+      </button>
+    </div>
+
+    <!-- Loading state -->
+    @if (isLoading()) {
+      <div class="space-y-4" aria-live="polite">
+        <div class="h-40 animate-pulse rounded-2xl bg-gray-200 dark:bg-gray-800"></div>
+        <div class="h-20 animate-pulse rounded-2xl bg-gray-200 dark:bg-gray-800"></div>
+        <div class="h-20 animate-pulse rounded-2xl bg-gray-200 dark:bg-gray-800"></div>
+      </div>
+    } @else {
+
+      <!-- Error state -->
+
+        <!-- Logged-in main account -->
+        <section
+          class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-blue-950 to-indigo-900 p-5 text-white shadow-xl sm:p-8"
+        >
+          <!-- Decorative background -->
+          <div
+            aria-hidden="true"
+            class="pointer-events-none absolute -right-16 -top-24 h-64 w-64 rounded-full bg-blue-500/20 blur-3xl"
+          ></div>
+          <div
+            aria-hidden="true"
+            class="pointer-events-none absolute -bottom-28 left-1/3 h-56 w-56 rounded-full bg-indigo-400/20 blur-3xl"
+          ></div>
+
+          <div class="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex items-center gap-4">
+              <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-white/20 bg-white/10 text-2xl font-bold shadow-inner backdrop-blur">
+                {{ (currentUser()?.name || 'B').charAt(0).toUpperCase() }}
+              </div>
+
+              <div class="min-w-0">
+                <div class="mb-2 flex flex-wrap items-center gap-2">
+                  <span class="rounded-full border border-emerald-300/30 bg-emerald-400/15 px-2.5 py-1 text-xs font-semibold text-emerald-200">
+                    MAIN ACCOUNT
+                  </span>
+                  <span class="rounded-full bg-white/10 px-2.5 py-1 text-xs font-medium text-blue-100">
+                    You
+                  </span>
+                </div>
+
+                <h2 class="truncate text-xl font-bold sm:text-2xl">
+                  {{ currentUser()?.name || 'Logged-in BDO' | uppercase }}
+                </h2>
+                <p class="mt-1 break-all text-sm text-blue-100/80">
+                  {{ currentUser()?.email || 'Account email unavailable' }}
+                </p>
+                <p class="mt-2 text-xs text-blue-200/80">
+                  Account ID: {{ currentUser()?.id ?? '—' }}
+                </p>
+              </div>
+            </div>
+
+            <div class="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-sm sm:min-w-44">
+              <p class="text-sm text-blue-100/80">Direct referrals</p>
+              <p class="mt-1 text-3xl font-bold">
+                {{ referralTree().length }}
+              </p>
+              <p class="mt-1 text-xs text-blue-100/70">
+                First-level accounts
+              </p>
+            </div>
+          </div>
+
+          <div class="relative mt-7 flex items-center justify-center gap-3 text-xs font-medium text-blue-100/80">
+            <span class="h-px flex-1 bg-white/20"></span>
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m0 0l-6-6m6 6l6-6" />
+            </svg>
+            YOUR REFERRAL HIERARCHY
+            <span class="h-px flex-1 bg-white/20"></span>
+          </div>
+        </section>
+
+        <!-- Network statistics -->
+        <section class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                Total network
+              </p>
+              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-300">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2m16-13a4 4 0 11-8 0 4 4 0 018 0zM16 3.13a4 4 0 010 7.75M22 21v-2a4 4 0 00-3-3.87" />
+                </svg>
+              </span>
+            </div>
+            <p class="mt-3 text-3xl font-bold text-gray-900 dark:text-white">
+              {{ totalReferrals() }}
+            </p>
+            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+              Across all referral levels
+            </p>
+          </div>
+
+          <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                Active BDOs
+              </p>
+              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-300">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              </span>
+            </div>
+            <p class="mt-3 text-3xl font-bold text-gray-900 dark:text-white">
+              {{ activeReferrals() }}
+            </p>
+            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+              Accounts with active status
+            </p>
+          </div>
+
+          <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                Inactive BDOs
+              </p>
+              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950 dark:text-amber-300">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                  <circle cx="12" cy="12" r="9" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01" />
+                </svg>
+              </span>
+            </div>
+            <p class="mt-3 text-3xl font-bold text-gray-900 dark:text-white">
+              {{ totalReferrals() - activeReferrals() }}
+            </p>
+            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+              Accounts with inactive status
+            </p>
+          </div>
+        </section>
+
+        <!-- Referral tree panel -->
+        <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900">
+          <div class="space-y-4 border-b border-gray-200 p-5 dark:border-gray-800 sm:p-6">
+            <div class="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
+              <div>
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white">
+                  Referral hierarchy
+                </h2>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                  Expand any account to explore its downline.
+                </p>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2">
+                <app-button size="sm" variant="outline" type="button" [endIcon]=`arrows-angle-expand` (btnClick)="expandAll()">
+                    Expand all
+                </app-button>
+                <app-button size="sm" type="button" variant="outline" [endIcon]=`arrows-angle-contract` (click)="collapseAll()">
+                  Collapse all
+                </app-button>
+              </div>
+            </div>
+
+            <!-- Search -->
+            <div class="relative">
+              <svg class="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <circle cx="11" cy="11" r="7" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="m16 16 4 4" />
+              </svg>
+
+              <input
+                #networkSearch
+                type="search"
+                [value]="searchTerm()"
+                (input)="onSearch(networkSearch.value)"
+                placeholder="Search by name, email, ID or referral code..."
+                class="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-11 pr-4 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 dark:border-gray-700 dark:bg-gray-950 dark:text-white dark:focus:bg-gray-950"
+              />
+            </div>
+          </div>
+
+          <div class="p-4 sm:p-6">
+            @if (filteredTree().length > 0) {
+              <div class="space-y-3">
+
+                <!-- Recursive referral node -->
+                <ng-template #nodeTemplate let-node="node" let-level="level">
+                  <article
+                    class="referral-node overflow-hidden rounded-xl border border-gray-200 bg-white transition-colors hover:border-blue-300 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-blue-800"
+                    [style.margin-left.px]="level > 1 ? 0 : null"
+                  >
+                    <div 
+                      class="flex items-start gap-3 p-4 sm:items-center sm:gap-4"
+                      [class.bg-blue-50/60]="level === 1"
+                      [class.dark:bg-blue-950/20]="level === 1"
+                    >
+                      <!-- Expand button -->
+                      <button
+                        type="button"
+                        (click)="toggleNode(node.id)"
+                        [attr.aria-expanded]="isExpanded(node.id)"
+                        [attr.aria-label]="(isExpanded(node.id) ? 'Collapse ' : 'Expand ') + node.name"
+                        class="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-500 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-blue-950 sm:mt-0"
+                      >
+                        @if (node.children?.length) {
+                          <svg
+                            class="h-4 w-4 transition-transform duration-200"
+                            [class.rotate-90]="isExpanded(node.id)"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6" />
+                          </svg>
+                        } @else {
+                          <span class="h-2 w-2 rounded-full bg-gray-300 dark:bg-gray-600"></span>
+                        }
+                      </button>
+
+                      <!-- Avatar -->
+                      <div
+                        class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-base font-bold"
+                        [class.bg-blue-100]="level === 1"
+                        [class.text-blue-700]="level === 1"
+                        [class.dark:bg-blue-900]="level === 1"
+                        [class.dark:text-blue-200]="level === 1"
+                        [class.bg-gray-100]="level > 1"
+                        [class.text-gray-600]="level > 1"
+                        [class.dark:bg-gray-800]="level > 1"
+                        [class.dark:text-gray-200]="level > 1"
+                      >
+                        {{ (node.name || 'B').charAt(0).toUpperCase() }}
+                      </div>
+
+                      <!-- Member details -->
+                      <div class="min-w-0 flex-1">
+                        <div class="flex flex-wrap items-center gap-2">
+                          <h3 class="break-words text-sm font-bold text-gray-900 dark:text-white">
+                            {{ node.name }}
+                          </h3>
+
+                          <span class="rounded-md bg-gray-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                            Level {{ level }}
+                          </span>
+
+                          @if (node.bdo_status) {
+                            <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+                              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                              Active
+                            </span>
+                          } @else {
+                            <span class="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700 dark:bg-amber-950/50 dark:text-amber-300">
+                              <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                              Inactive
+                            </span>
+                          }
+                        </div>
+
+                        <p class="mt-1 break-all text-xs text-gray-500 dark:text-gray-400">
+                          {{ node.email }}
+                        </p>
+
+                        <div class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500 dark:text-gray-400">
+                          <span>ID: {{ node.id }}</span>
+                          <span class="hidden text-gray-300 dark:text-gray-700 sm:inline">•</span>
+                          <span class="break-all">
+                            Code: {{ node.referral_code || '—' }}
+                          </span>
+                        </div>
+                      </div>
+
+                      <!-- Children count -->
+                      <div class="hidden shrink-0 text-right sm:block">
+                        <p class="text-lg font-bold text-gray-900 dark:text-white">
+                          {{ node.children?.length ?? 0 }}
+                        </p>
+                        <p class="text-[11px] text-gray-500 dark:text-gray-400">
+                          Direct referrals
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Expanded child hierarchy -->
+                    @if (isExpanded(node.id)) {
+                      <div class="tree-children border-t border-gray-100 bg-gray-50/70 p-3 dark:border-gray-800 dark:bg-gray-950/50 sm:p-4">
+                        @if (node.children?.length) {
+                          <div class="space-y-3">
+                            @for (child of node.children; track child.id) {
+                              <div class="relative pl-4 sm:pl-6">
+                                <span
+                                  aria-hidden="true"
+                                  class="absolute bottom-1 left-0 top-0 w-px bg-blue-200 dark:bg-blue-900"
+                                ></span>
+                                <span
+                                  aria-hidden="true"
+                                  class="absolute left-0 top-7 h-px w-4 bg-blue-200 dark:bg-blue-900 sm:w-6"
+                                ></span>
+
+                                <ng-container
+                                  [ngTemplateOutlet]="nodeTemplate"
+                                  [ngTemplateOutletContext]="{
+                                    node: child,
+                                    level: level + 1
+                                  }"
+                                ></ng-container>
+                              </div>
+                            }
+                          </div>
+                        } @else {
+                          <div class="flex items-center gap-3 rounded-lg border border-dashed border-gray-300 bg-white px-4 py-5 dark:border-gray-700 dark:bg-gray-900">
+                            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+                              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <circle cx="12" cy="12" r="9" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01" />
+                              </svg>
+                            </div>
+                            <div>
+                              <p class="text-sm font-semibold text-gray-700 dark:text-gray-200">
+                                No referrals yet
+                              </p>
+                              <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                This account has no direct referrals.
+                              </p>
+                            </div>
+                          </div>
+                        }
+                      </div>
+                    }
+                  </article>
+                </ng-template>
+
+                <!-- First-level referrals -->
+                @for (node of filteredTree(); track node.id) {
+                  <ng-container
+                    [ngTemplateOutlet]="nodeTemplate"
+                    [ngTemplateOutletContext]="{
+                      node: node,
+                      level: 1
+                    }"
+                  ></ng-container>
+                }
+              </div>
+            } @else {
+              <!-- Empty / no search results -->
+              <div class="flex flex-col items-center justify-center px-5 py-14 text-center">
+                <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-500">
+                  <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="11" cy="11" r="7" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m16 16 4 4M8 11h6" />
+                  </svg>
+                </div>
+
+                <h3 class="mt-4 text-base font-bold text-gray-900 dark:text-white">
+                  {{ searchTerm() ? 'No matching referrals' : 'No referrals found' }}
+                </h3>
+
+                <p class="mt-2 max-w-sm text-sm text-gray-500 dark:text-gray-400">
+                  {{
+                    searchTerm()
+                      ? 'Try a different name, email, ID or referral code.'
+                      : 'Your referral hierarchy will appear here when referrals are available.'
+                  }}
+                </p>
+
+                @if (searchTerm()) {
+                  <button
+                    type="button"
+                    (click)="onSearch('')"
+                    class="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
+                  >
+                    Clear search
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- Footer hint -->
+        <div class="flex items-start gap-3 rounded-xl border border-blue-100 bg-blue-50/70 p-4 dark:border-blue-900/50 dark:bg-blue-950/20">
+          <svg class="mt-0.5 h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="9" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 11v5m0-8h.01" />
+          </svg>
+          <div>
+            <p class="text-sm font-semibold text-blue-900 dark:text-blue-200">
+              Understanding your network
+            </p>
+            <p class="mt-1 text-xs leading-5 text-blue-800/80 dark:text-blue-300/80">
+              Select the arrow beside any account to expand or collapse its downline.
+              Each nested level represents another generation of referrals.
+            </p>
+          </div>
+        </div>
+      }
+  </div>
+</div>

@@ -347,8 +347,8 @@ export class SubAdminListComponent implements OnInit {
       sections: {
         meta: true,
         address: false,
-        security: true,
-        dangerZone: true,
+        security: false,
+        dangerZone: false,
       },
     };
     const encryptedData = await this.encryptionService.encrypt(data);

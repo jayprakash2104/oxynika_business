@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { EncryptionService } from '../../core/services/encryption.service';
-import { ProfilePageConfig } from '../../core/interfaces/ProfilePageConfig';
 
 import { FormsModule } from '@angular/forms';
 import { PageBreadcrumbComponent } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
@@ -22,20 +20,34 @@ import { UserMetaCardComponent } from '../../shared/components/user-profile/user
   styles: ``
 })
 export class ProfileComponent implements OnInit {
-  twoFactorEnabled = false;
-  private route = inject(ActivatedRoute);
   private encryptionService = inject(EncryptionService);
-  pageTitle = signal('User Profile');
-  sections = signal<any>(null);
 
-  async ngOnInit() {
-    const encryptedData = this.route.snapshot.queryParamMap.get('data');
-    if (!encryptedData) {return;}
-    const data = await this.encryptionService.decrypt<ProfilePageConfig>(encryptedData);
-    // console('Decrypted profile data:', data);
-    if (!data) {return;}
-    this.pageTitle.set(data.pageTitle);
-    this.sections.set(data.sections);
-    // console('Sections:', this.sections(), 'Page Title:', this.pageTitle());
+  currentUser = signal<any>(null);
+
+async ngOnInit() {
+  const encryptedUser = sessionStorage.getItem('user');
+
+  if (!encryptedUser) {
+    return;
   }
+
+  try {
+    const user = await this.encryptionService.decrypt<any>(encryptedUser);
+
+    if (!user.permissions?.length) {
+      const encryptedPermissions = sessionStorage.getItem('permissions');
+
+      const permissions: string[] = encryptedPermissions
+        ? (await this.encryptionService.decrypt<string[]>(encryptedPermissions)) ?? []
+        : [];
+
+      user.permissions = permissions;
+    }
+
+    this.currentUser.set(user);
+  } catch (error) {
+    console.error('Failed to decrypt user details:', error);
+    this.currentUser.set(null);
+  }
+}
 }

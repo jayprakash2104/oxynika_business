@@ -1,0 +1,47 @@
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Smooth appearance for each referral card */
+.referral-node {
+  animation: referral-enter 220ms ease-out both;
+  transform-origin: top center;
+}
+
+/* Smoothly reveal nested referral levels */
+.tree-children {
+  animation: tree-reveal 200ms ease-out both;
+}
+
+@keyframes referral-enter {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tree-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .referral-node,
+  .tree-children {
+    animation: none;
+  }
+}
