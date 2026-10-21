@@ -1,4 +1,4 @@
-.loader {
+.loaderr {
   --color-1: #fff;
   --size: 1px;
 
@@ -8,7 +8,7 @@
   position: relative;
   animation: rotate 1s linear infinite;
 }
-.loader::before {
+.loaderr::before {
   content: '';
   box-sizing: border-box;
   position: absolute;

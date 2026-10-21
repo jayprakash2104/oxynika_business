@@ -47,6 +47,7 @@ onGridReady(event: GridReadyEvent): void {
 
   // Row actions
   showActions = input(false);
+  private loadingAction = signal<string | null>(null);
   actions = input<any[]>([]);
 
   addClick = output<void>();
@@ -54,6 +55,7 @@ onGridReady(event: GridReadyEvent): void {
   defaultColDef: ColDef = {
     sortable: true,
     resizable: true,
+    minWidth: 120,
   };
 
   theme = themeQuartz;
@@ -85,7 +87,7 @@ onGridReady(event: GridReadyEvent): void {
         sortable: false,
         filter: false,
         flex: 1,
-
+        cellClass: 'action-cell',
         cellRenderer: (params: any) => {
           const div = document.createElement('div');
 

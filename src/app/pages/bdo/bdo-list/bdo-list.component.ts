@@ -42,6 +42,7 @@ export class BdoListComponent implements OnInit {
 
   dataArr = signal<any[]>([]);
   isLoading = signal(true);
+  isSubmitting = signal(false);
   isModalOpen = signal(false);
   isEditMode = signal(false);
   editingBdoId = signal<number | null>(null);
@@ -99,20 +100,20 @@ form = this.fb.group({
 ];
 
   readonly allActions: any[] = [
-    {
-    key: 'view',
-    icon: 'bi-eye',
-    label: 'View',
-    permission: 'bdo.view',
-    handler: (item:any) => this.onRowClick(item)
-  },
-  {
-    key: 'edit',
-    icon: 'bi-pencil',
-    label: 'Edit',
-    permission: 'bdo.edit',
-    handler: (item:any) => this.onEdit(item)
-  }
+  //   {
+  //   key: 'view',
+  //   icon: 'bi-eye',
+  //   label: 'View',
+  //   permission: 'bdo.view',
+  //   handler: (item:any) => this.onRowClick(item)
+  // },
+  // {
+  //   key: 'edit',
+  //   icon: 'bi-pencil',
+  //   label: 'Edit',
+  //   permission: 'bdo.edit',
+  //   handler: (item:any) => this.onEdit(item)
+  // }
 ];
 
 readonly actions = computed(() =>
@@ -162,7 +163,7 @@ readonly actions = computed(() =>
   }
 
   onSubmit() {
-    if (this.form.invalid) {
+    if (this.form.invalid || this.isSubmitting()) {
       this.form.markAllAsTouched();
       return;
     }
@@ -191,7 +192,7 @@ readonly actions = computed(() =>
     if (this.isEditMode()) {
       const id = this.editingBdoId();
       if (id == null) return;
-
+      // this.isSubmitting.set(true);
       // this.commonService.updateBdo(id, payload).subscribe({
       //   next: () => {
       //     this.alertService.success(
@@ -199,6 +200,7 @@ readonly actions = computed(() =>
       //       'Success',
       //       'right'
       //     );
+      //     this.isSubmitting.set(false);
       //     this.closeModal();
       //     this.getBdoList();
       //   },
@@ -207,18 +209,20 @@ readonly actions = computed(() =>
       //       error?.error?.message || 'Failed to update BDO.',
       //       'error'
       //     );
+      //     this.isSubmitting.set(false);
       //     console.error('Error updating BDO:', error);
       //   },
       // });
       return;
     }
-
+    this.isSubmitting.set(true);
     this.commonService.createBdo(payload).subscribe({
       next: () => {
         this.alertService.success(
           'Bdo created successfully.',
           'Success'
         );
+        this.isSubmitting.set(false);
         this.closeModal();
         this.getBdoList();
       },
@@ -227,6 +231,7 @@ readonly actions = computed(() =>
           error?.error?.message || 'Failed to create bdo.',
           'error'
         );
+        this.isSubmitting.set(false);
         console.error('Error creating bdo:', error);
       },
     });
@@ -262,8 +267,10 @@ readonly actions = computed(() =>
   }
 
   closeModal() {
-    this.isModalOpen.set(false);
-    this.resetFormForCreate();
+    if(!this.isSubmitting()){
+      this.isModalOpen.set(false);
+      this.resetFormForCreate();
+    }
   }
 
   resetFormForCreate() {

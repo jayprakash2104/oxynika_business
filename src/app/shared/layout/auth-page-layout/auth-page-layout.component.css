@@ -1,0 +1,257 @@
+/* ========================================
+   MOBILE BLURRED ABSTRACT BACKGROUND
+   ======================================== */
+
+.mobile-glass-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at 0% 25%,
+      rgba(112, 191, 68, 0.16),
+      transparent 45%
+    ),
+    radial-gradient(
+      ellipse at 95% 70%,
+      rgba(65, 174, 210, 0.17),
+      transparent 45%
+    ),
+    linear-gradient(
+      145deg,
+      #fbfefb 0%,
+      #f6fbf9 50%,
+      #f5faff 100%
+    );
+}
+
+/* ========================================
+   SOFT, IRREGULAR COLOR CLOUDS
+   No borders, circles, or glass highlights
+   ======================================== */
+
+.glass-bubble {
+  position: absolute;
+  display: block;
+  border: none;
+  border-radius: 42% 58% 63% 37% / 45% 38% 62% 55%;
+
+  filter: blur(38px);
+  opacity: 0.55;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+
+  animation: cloud-float 12s ease-in-out infinite alternate;
+  will-change: transform, border-radius;
+}
+
+/* Soft green cloud — upper right */
+
+.bubble-one {
+  width: 220px;
+  height: 190px;
+  top: 5%;
+  right: -95px;
+
+  background: radial-gradient(
+    ellipse at 40% 45%,
+    rgba(160, 220, 125, 0.42) 0%,
+    rgba(175, 226, 150, 0.25) 38%,
+    rgba(175, 226, 150, 0.08) 65%,
+    transparent 78%
+  );
+
+  animation-duration: 14s;
+}
+
+/* Soft aqua cloud — left side */
+
+.bubble-two {
+  width: 180px;
+  height: 210px;
+  top: 32%;
+  left: -85px;
+
+  background: radial-gradient(
+    ellipse at 60% 45%,
+    rgba(135, 205, 235, 0.38) 0%,
+    rgba(155, 215, 238, 0.22) 40%,
+    rgba(155, 215, 238, 0.06) 68%,
+    transparent 80%
+  );
+
+  animation-delay: -3s;
+  animation-duration: 16s;
+}
+
+/* Soft mint cloud — bottom right */
+
+.bubble-three {
+  width: 220px;
+  height: 190px;
+  right: -95px;
+  bottom: 8%;
+
+  background: radial-gradient(
+    ellipse at 35% 45%,
+    rgba(110, 215, 180, 0.34) 0%,
+    rgba(145, 225, 195, 0.21) 40%,
+    rgba(145, 225, 195, 0.06) 68%,
+    transparent 80%
+  );
+
+  animation-delay: -5s;
+  animation-duration: 15s;
+}
+
+/* Soft lavender cloud — upper left */
+
+.bubble-four {
+  width: 120px;
+  height: 100px;
+  top: 17%;
+  left: 12%;
+
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(200, 190, 245, 0.26) 0%,
+    rgba(210, 202, 248, 0.15) 42%,
+    rgba(210, 202, 248, 0.04) 68%,
+    transparent 80%
+  );
+
+  filter: blur(30px);
+  animation-delay: -4s;
+  animation-duration: 13s;
+}
+
+/* ========================================
+   EXTRA BACKGROUND GLOW
+   ======================================== */
+
+.glass-glow {
+  position: absolute;
+  width: 280px;
+  height: 240px;
+  border-radius: 45% 55% 60% 40% / 50% 40% 60% 50%;
+  filter: blur(75px);
+  opacity: 0.35;
+  will-change: transform;
+
+  animation: glow-drift 16s ease-in-out infinite alternate;
+}
+
+.glow-one {
+  top: 24%;
+  right: -150px;
+  background: rgba(135, 200, 105, 0.28);
+}
+
+.glow-two {
+  bottom: 12%;
+  left: -145px;
+  background: rgba(95, 180, 220, 0.24);
+  animation-delay: -6s;
+}
+
+/* ========================================
+   NATURAL, SLOW MOVEMENT
+   ======================================== */
+
+@keyframes cloud-float {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    border-radius: 42% 58% 63% 37% / 45% 38% 62% 55%;
+  }
+
+  50% {
+    transform: translate3d(-10px, -15px, 0) scale(1.08);
+    border-radius: 58% 42% 40% 60% / 38% 55% 45% 62%;
+  }
+
+  100% {
+    transform: translate3d(8px, 10px, 0) scale(1.04);
+    border-radius: 35% 65% 55% 45% / 55% 45% 60% 40%;
+  }
+}
+
+@keyframes glow-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  to {
+    transform: translate3d(-18px, -20px, 0) scale(1.12);
+  }
+}
+
+/* ========================================
+   RESPONSIVE STYLES
+   ======================================== */
+
+@media (max-width: 1023px) {
+  .glass-bubble {
+    filter: blur(32px);
+    opacity: 0.48;
+  }
+
+  .bubble-one {
+    width: 175px;
+    height: 160px;
+    right: -90px;
+  }
+
+  .bubble-two {
+    width: 145px;
+    height: 175px;
+    left: -75px;
+  }
+
+  .bubble-three {
+    width: 175px;
+    height: 155px;
+    right: -85px;
+  }
+
+  .bubble-four {
+    width: 95px;
+    height: 85px;
+    filter: blur(26px);
+  }
+
+  .glass-glow {
+    filter: blur(65px);
+    opacity: 0.3;
+  }
+}
+@media (max-width: 1023px) {
+  html:not(.dark) .mobile-glass-bg {
+    display: block;
+  }
+
+  /* Dark mode: hide the animated background */
+  html.dark .mobile-glass-bg {
+    display: none;
+  }
+}
+/* Hide the effect on desktop */
+
+@media (min-width: 1024px) {
+  .mobile-glass-bg {
+    display: none;
+  }
+}
+
+/* Respect reduced-motion preferences */
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-bubble,
+  .glass-glow {
+    animation: none;
+    will-change: auto;
+  }
+}

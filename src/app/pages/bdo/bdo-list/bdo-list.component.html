@@ -151,12 +151,16 @@
 
       <div class="mt-6 flex items-center gap-3 px-2 lg:justify-end">
 
-        <app-button size="sm" variant="outline" type="button" (btnClick)="closeModal()">
+        <app-button [disabled]="isSubmitting()" size="sm" variant="outline" type="button" (btnClick)="closeModal()">
           Close
         </app-button>
 
-        <app-button size="sm" type="submit">
-          {{ isEditMode() ? 'Update BDO' : 'Save BDO' }}
+        <app-button [disabled]="isSubmitting()" size="sm" type="submit">
+          @if (isSubmitting()) {
+            <span class="animate-pulse">Loading...</span>
+          } @else {
+            {{ isEditMode() ? 'Update BDO' : 'Save BDO' }}
+          }
         </app-button>
 
       </div>

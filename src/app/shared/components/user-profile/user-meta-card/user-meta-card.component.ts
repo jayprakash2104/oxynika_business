@@ -28,12 +28,6 @@ export class UserMetaCardComponent {
     });
   }
 
-  isInfoModalOpen = false;
-
-  openInfoModal() {
-    this.isInfoModalOpen = true;
-  }
-
 groupedPermissions = computed(() => {
   const permissions = this.user()?.permissions ?? [];
 
@@ -66,25 +60,4 @@ groupedPermissions = computed(() => {
   return grouped;
 });
 
-  // Example user data (could be made dynamic)
-  // user = {
-  //   firstName: 'Chowdury',
-  //   lastName: 'Musharof',
-  //   role: 'Team Manager',
-  //   location: 'Arizona, United States.',
-  //   avatar: '/images/user/owner.png',
-  //   social: {
-  //     facebook: 'https://www.facebook.com/PimjoHQ',
-  //     x: 'https://x.com/PimjoHQ',
-  //     linkedin: 'https://www.linkedin.com/company/pimjohq',
-  //     instagram: 'https://instagram.com/pimjohq',
-  //   },
-  //   email: 'randomuser@pimjo.com',
-  //   phone: '+09 363 398 46',
-  //   bio: 'Team Manager',
-  // };
-
-  handleInfoSave() {
-    // console('Saving profile changes:', this.user());
-  }
 }

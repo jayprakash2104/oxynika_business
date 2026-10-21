@@ -39,6 +39,7 @@ export class PackagesComponent {
   public permissionService = inject(PermissionService);
 
   dataArr = signal<any[]>([]);
+  isSubmitting = signal(false);
   isLoading = signal(true);
   isModalOpen = signal(false);
   isEditMode = signal(false);
@@ -105,7 +106,7 @@ export class PackagesComponent {
     },
     {
       key: 'request-activation',
-      text: 'Request Activation',
+      text: 'Request',
       icon: 'bi bi-arrow-bar-right',
       label: 'Package Activation',
       permission: 'activation-requests.view',
@@ -165,7 +166,7 @@ export class PackagesComponent {
   }
 
   onSubmit() {
-    if (this.form.invalid) {
+    if (this.form.invalid || this.isSubmitting()) {
       this.form.markAllAsTouched();
       return;
     }
@@ -180,13 +181,14 @@ export class PackagesComponent {
     // Send status only while editing
     if (this.isEditMode()) {
       payload['status'] = formValue.status;
+      this.isSubmitting.set(true);
       this.commonService.updatePackage(this.editingPackageId(), payload).subscribe({
         next: () => {
           this.alertService.success(
             'Package updated successfully.',
             'Success'
           );
-
+          this.isSubmitting.set(false);
           this.closeModal();
           this.getPackageList();
         },
@@ -195,18 +197,19 @@ export class PackagesComponent {
             error?.error?.message || 'Failed to update package.',
             'error'
           );
-
+          this.isSubmitting.set(false);
           console.error('Error updating package:', error);
         },
       });
     } else {
+      this.isSubmitting.set(true);
       this.commonService.createPackage(payload).subscribe({
         next: () => {
           this.alertService.success(
             'Package created successfully.',
             'Success'
           );
-
+          this.isSubmitting.set(false);
           this.closeModal();
           this.getPackageList();
         },
@@ -215,7 +218,7 @@ export class PackagesComponent {
             error?.error?.message || 'Failed to create package.',
             'error'
           );
-
+          this.isSubmitting.set(false);
           console.error('Error creating package:', error);
         },
       });
@@ -244,9 +247,10 @@ export class PackagesComponent {
     if (!confirmed) {
       return;
     }
-
+    this.isLoading.set(true);
     this.commonService.deletePackage(packageId).subscribe({
     next: () => {
+      this.isLoading.set(false);
       this.alertService.success(
         'Package deleted successfully.',
         'Success'
@@ -259,7 +263,7 @@ export class PackagesComponent {
         error?.error?.message || 'Failed to delete package.',
         'Error'
       );
-
+      this.isLoading.set(false);
       console.error('Error deleting package:', error);
     }
   });
@@ -277,18 +281,19 @@ export class PackagesComponent {
       );
       return;
     }
-
+    this.isLoading.set(true);
     this.commonService.activatePackage(packageId).subscribe({
       next: (response) => {
         this.alertService.success(
           'Package activation request sent successfully.',
           'Success'
         );
+        this.isLoading.set(false);
       },
 
       error: (error) => {
         console.error('Package activation error:', error);
-
+        this.isLoading.set(false);
         this.alertService.error(
           error?.error?.message ||
           'Failed to send package activation request.',
@@ -312,8 +317,10 @@ export class PackagesComponent {
   }
 
   closeModal() {
-    this.isModalOpen.set(false);
-    this.resetFormForCreate();
+    if (!this.isSubmitting()){
+      this.isModalOpen.set(false);
+      this.resetFormForCreate();
+    }
   }
 
   resetFormForCreate() {

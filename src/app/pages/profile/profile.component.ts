@@ -4,7 +4,6 @@ import { EncryptionService } from '../../core/services/encryption.service';
 
 import { FormsModule } from '@angular/forms';
 import { PageBreadcrumbComponent } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
-import { UserAddressCardComponent } from '../../shared/components/user-profile/user-address-card/user-address-card.component';
 import { UserMetaCardComponent } from '../../shared/components/user-profile/user-meta-card/user-meta-card.component';
 
 @Component({
@@ -13,7 +12,6 @@ import { UserMetaCardComponent } from '../../shared/components/user-profile/user
     CommonModule,
     PageBreadcrumbComponent,
     UserMetaCardComponent,
-    UserAddressCardComponent,
     FormsModule,
   ],
   templateUrl: './profile.component.html',

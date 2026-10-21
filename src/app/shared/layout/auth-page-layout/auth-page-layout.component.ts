@@ -11,7 +11,7 @@ import { ThemeToggleTwoComponent } from '../../components/common/theme-toggle-tw
     ThemeToggleTwoComponent,
   ],
   templateUrl: './auth-page-layout.component.html',
-  styles: ``
+  styleUrl: './auth-page-layout.component.css'
 })
 export class AuthPageLayoutComponent {
 

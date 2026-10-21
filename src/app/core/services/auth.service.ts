@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal  } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -25,6 +25,7 @@ export interface LoginResponse {
 export class AuthService {
 
   private http = inject(HttpClient);
+  isLoggingOut = signal(false);
 
   login(payload: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(

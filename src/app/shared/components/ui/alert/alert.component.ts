@@ -25,7 +25,7 @@ export class AlertComponent {
   get variantClasses() {
     return {
       success: {
-        container: 'border-success-500 bg-success-50 dark:border-success-500/30 dark:bg-success-500/15',
+        container: 'border-success-500 bg-success-50 dark:border-success-500/60 dark:bg-gray-900/90 dark:backdrop-blur-sm',
         icon: 'text-success-500'
       },
       error: {

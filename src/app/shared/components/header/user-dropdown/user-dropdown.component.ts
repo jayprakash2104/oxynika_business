@@ -46,6 +46,7 @@ export class UserDropdownComponent implements OnInit {
   }
 
   signOut(){
+    this.authService.isLoggingOut.set(true);
     this.authService.logout().subscribe({
       next: () => {
         this.clearSession();
@@ -53,7 +54,6 @@ export class UserDropdownComponent implements OnInit {
 
       error: (error) => {
         console.error('Logout failed:', error);
-        this.clearSession();
       }
     });
   }
@@ -68,6 +68,8 @@ export class UserDropdownComponent implements OnInit {
     // Redirect to sign in
     this.router.navigate(['/signin'], {
       replaceUrl: true
+    }).finally(() => {
+      this.authService.isLoggingOut.set(false);
     });
   }
 

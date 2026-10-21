@@ -40,6 +40,7 @@ export class SubAdminListComponent implements OnInit {
   public alertService = inject(AlertService);
 
   subAdmins = signal<any[]>([]);
+  isSubmitting = signal(false);
   isLoading = signal(true);
   isModalOpen = signal(false);
   permissionMenus = signal<any[]>([]);
@@ -98,12 +99,12 @@ export class SubAdminListComponent implements OnInit {
     label: 'Edit',
     handler: (item:any) => this.onEditSubAdmin(item)
   },
-  {
-    key: 'delete',
-    icon: 'bi-trash3',
-    label: 'Delete',
-    handler: (item:any) => this.onDeleteSubAdmin(item)
-  }
+  // {
+  //   key: 'delete',
+  //   icon: 'bi-trash3',
+  //   label: 'Delete',
+  //   handler: (item:any) => this.onDeleteSubAdmin(item)
+  // }
 ];
 
   ngOnInit() {
@@ -270,7 +271,7 @@ export class SubAdminListComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.subAdminForm.invalid) {
+    if (this.subAdminForm.invalid || this.isSubmitting()) {
       this.subAdminForm.markAllAsTouched();
       return;
     }
@@ -300,7 +301,7 @@ export class SubAdminListComponent implements OnInit {
     if (this.isEditMode()) {
       const id = this.editingSubAdminId();
       if (id == null) return;
-
+      this.isSubmitting.set(true);
       this.commonService.updateSubAdmin(id, payload).subscribe({
         next: () => {
           this.alertService.success(
@@ -308,6 +309,7 @@ export class SubAdminListComponent implements OnInit {
             'Success',
             'right'
           );
+          this.isSubmitting.set(false);
           this.closeModal();
           this.getSubAdminList();
         },
@@ -316,18 +318,20 @@ export class SubAdminListComponent implements OnInit {
             error?.error?.message || 'Failed to update sub admin.',
             'error'
           );
+          this.isSubmitting.set(false);
           console.error('Error updating sub admin:', error);
         },
       });
       return;
     }
-
+    this.isSubmitting.set(true);
     this.commonService.createSubAdmin(payload).subscribe({
       next: () => {
         this.alertService.success(
           'Sub admin created successfully.',
           'Success'
         );
+        this.isSubmitting.set(false);
         this.closeModal();
         this.getSubAdminList();
       },
@@ -336,6 +340,7 @@ export class SubAdminListComponent implements OnInit {
           error?.error?.message || 'Failed to create sub admin.',
           'error'
         );
+        this.isSubmitting.set(false);
         console.error('Error creating sub admin:', error);
       },
     });
@@ -416,7 +421,7 @@ export class SubAdminListComponent implements OnInit {
     });
   }
 
-  onDeleteSubAdmin(subAdmin: any) {
+  // onDeleteSubAdmin(subAdmin: any) {
     
-  }
+  // }
 }

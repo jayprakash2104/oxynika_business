@@ -4,7 +4,7 @@ import { Component, ElementRef, QueryList, ViewChildren, ChangeDetectorRef, sign
 import { SidebarService } from '../../services/sidebar.service';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { SafeHtmlPipe } from '../../pipe/safe-html.pipe';
-import { combineLatest, Subscription } from 'rxjs';
+import { combineLatest, Subscription, take } from 'rxjs';
 import { CommonService } from '../../../core/services/common.service';
 import { EncryptionService } from '../../../core/services/encryption.service';
 
@@ -51,6 +51,14 @@ export class AppSidebarComponent {
   private subscription: Subscription = new Subscription();
   menu: any;
 
+  private closeMobileSidebar() {
+  this.isMobileOpen$.pipe(take(1)).subscribe(isMobileOpen => {
+    if (isMobileOpen) {
+      this.sidebarService.setMobileOpen(false);
+    }
+  });
+}
+
   constructor(
     public sidebarService: SidebarService,
     private router: Router,
@@ -68,6 +76,7 @@ export class AppSidebarComponent {
       this.router.events.subscribe(event => {
         if (event instanceof NavigationEnd) {
           this.setActiveMenuFromRoute(this.router.url);
+          this.closeMobileSidebar();
         }
       })
     );
@@ -230,13 +239,9 @@ export class AppSidebarComponent {
   }
 
   onSubmenuClick() {
-    // console('click submenu');
-    this.isMobileOpen$.subscribe(isMobile => {
-      if (isMobile) {
-        this.sidebarService.setMobileOpen(false);
-      }
-    }).unsubscribe();
-  }  
+    this.closeMobileSidebar();
+
+}
 
   
 }

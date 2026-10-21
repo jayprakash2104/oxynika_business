@@ -21,7 +21,16 @@
     <!-- Wallet Dropdown -->
     @if (isOpen()) {
     <div
-        class="absolute right-0 top-full z-50 mt-3 flex w-80 max-w-[calc(100vw-2rem)] flex-col rounded-2xl border border-gray-200 bg-white p-4 shadow-lg dark:border-gray-800 dark:bg-gray-900 sm:w-96">
+        class="absolute left-0 top-full z-50 mt-3
+         flex w-80 max-w-[calc(100vw-2rem)]
+         flex-col rounded-2xl border border-gray-200
+         bg-white p-4 shadow-lg
+         dark:border-gray-800 dark:bg-gray-900
+
+         min-[1280px]:left-auto
+         min-[1280px]:right-0
+         min-[1280px]:w-96"
+    >
 
         <!-- Dropdown Header -->
         <div class="mb-4 flex items-center justify-between border-b border-gray-100 pb-3 dark:border-gray-700">
